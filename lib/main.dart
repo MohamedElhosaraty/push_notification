@@ -6,6 +6,8 @@ import 'package:push_notifications/services/push_notification_service.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
