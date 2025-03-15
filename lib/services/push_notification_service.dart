@@ -19,11 +19,28 @@ class PushNotificationsService {
     });
     FirebaseMessaging.onBackgroundMessage(handlerBackgroundMessage);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (message.data.isNotEmpty) {
-       handleNotification(navigatorKey.currentContext!,message.data,);
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
+      log("message received");
+      try {
+
+        handleNotification(navigatorKey.currentContext!, event.data);
+      } catch (err) {
+        log(err.toString());
       }
     });
+
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null) {
+        handleNotification(navigatorKey.currentContext!, message.data);
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      handleNotification(navigatorKey.currentContext!, message.data);
+    });
+
     // foreground
     handlerForegroundMessage();
 
