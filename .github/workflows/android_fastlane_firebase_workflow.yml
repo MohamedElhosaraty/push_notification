@@ -31,6 +31,10 @@ jobs:
           bundler-cache: true
           working-directory: android
 
+      - name: Add Linux platform to Bundler
+        run: bundle lock --add-platform x86_64-linux
+        working-directory: android
+
       - name: Install Fastlane dependencies
         run: |
           bundle install || gem install fastlane
