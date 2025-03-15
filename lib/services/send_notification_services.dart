@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:push_notifications/app/notificaion.dart';
 
+import '../main.dart';
+
 Future<String> getAccessToken() async {
   // add key json file path
   final jsonString = await rootBundle.loadString(
@@ -76,16 +78,12 @@ Future<void> sendNotification(
   }
 }
 
-void handleNotification(BuildContext context, Map<String, dynamic> data) {
-  String id = data['id'];
+void handleNotification(Map<String, dynamic> data) {
+  String id = data['id'] ?? 'no id';
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Notification1(id : id)),
-    );
-
-    log("success");
-
+  navigatorKey.currentState?.push(
+    MaterialPageRoute(
+      builder: (context) => Notification1(id: id),
+    ),
+  );
 }
-

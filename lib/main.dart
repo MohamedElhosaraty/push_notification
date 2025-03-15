@@ -19,6 +19,12 @@ void main() async {
   ]);
 
   runApp(const MyApp());
+
+  // التعامل مع الإشعار بعد تحميل التطبيق بالكامل
+  if (PushNotificationsService.pendingNotification != null) {
+    handleNotification(PushNotificationsService.pendingNotification!);
+    PushNotificationsService.pendingNotification = null; // تصفير البيانات بعد التنقل
+  }
 }
 
 class MyApp extends StatelessWidget {
