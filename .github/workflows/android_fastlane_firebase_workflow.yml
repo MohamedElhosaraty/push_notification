@@ -21,29 +21,30 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.27.3'
           channel: stable
 
-      - name: Upgrade Flutter & Get Dependencies
-        run: |
-          flutter upgrade
-          flutter pub get
-
-      - name: Setup Ruby
+      - name: Install Ruby and Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.4"
+          ruby-version: '3.3.4'
           bundler-cache: true
           working-directory: android
 
-      - name: Update Fastlane
-        run: gem update fastlane --no-document
+      - name: Force Add Linux Platform to Gemfile.lock
+        run: bundle lock --add-platform x86_64-linux
+        working-directory: android
 
       - name: Install Fastlane dependencies
-        run: bundle install
+        run: |
+          bundle install || gem install fastlane
         working-directory: android
 
       - name: Clean Flutter Project
         run: flutter clean
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
 
       - name: Build APK manually
         run: flutter build apk --release --no-tree-shake-icons
