@@ -9,7 +9,15 @@ class Notification1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(id),
+        child: Column(
+          children: [
+            Container(
+              height: 200,
+              width: 200,color: Colors.red
+            ),
+            Text(id),
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:push_notifications/app/push_notifications.dart';
 import 'package:push_notifications/services/local_notifications_service.dart';
 import 'package:push_notifications/services/push_notification_service.dart';
+import 'package:push_notifications/services/send_notification_services.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,12 +20,6 @@ void main() async {
   ]);
 
   runApp(const MyApp());
-
-  // التعامل مع الإشعار بعد تحميل التطبيق بالكامل
-  if (PushNotificationsService.pendingNotification != null) {
-    handleNotification(PushNotificationsService.pendingNotification!);
-    PushNotificationsService.pendingNotification = null; // تصفير البيانات بعد التنقل
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +27,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // ✅ التحقق من الإشعار بعد بناء الـ Widget Tree
+    if (PushNotificationsService.pendingNotificationData != null) {
+      Future.delayed(Duration.zero, () {
+        handleNotification(navigatorKey.currentContext!,
+            PushNotificationsService.pendingNotificationData!);
+        PushNotificationsService.pendingNotificationData =
+            null; // تصفير البيانات
+      });
+    }
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Flutter Demo',
