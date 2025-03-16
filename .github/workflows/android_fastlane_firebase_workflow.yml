@@ -31,12 +31,9 @@ jobs:
           bundler-cache: true
           working-directory: android
 
-      - name: Force Add Linux Platform to Gemfile.lock
-        run: bundle lock --add-platform x86_64-linux
-        working-directory: android
-
       - name: Install Fastlane dependencies
         run: |
+          bundle lock --add-platform x86_64-linux
           bundle install || gem install fastlane
         working-directory: android
 
